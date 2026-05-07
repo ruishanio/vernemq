@@ -36,10 +36,10 @@ RUN apt-get update \
 
 WORKDIR /vernemq
 
-ENV DOCKER_VERNEMQ_LOG__CONSOLE=console \
-    PATH="/vernemq/bin:${PATH}"
+ENV PATH="/vernemq/bin:${PATH}"
 
 COPY --from=builder --chown=10000:10000 /build/vernemq/_build/default/rel/vernemq/ /vernemq/
+COPY --chown=10000:10000 docker/vernemq.conf /vernemq/etc/vernemq.conf
 
 RUN ln -s /vernemq/etc /etc/vernemq \
     && ln -s /vernemq/data /var/lib/vernemq \
