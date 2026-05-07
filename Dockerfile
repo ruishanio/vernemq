@@ -2,7 +2,7 @@
 
 ARG OTP_VERSION=26
 
-FROM erlang:${OTP_VERSION}-bookworm AS builder
+FROM erlang:${OTP_VERSION} AS builder
 
 WORKDIR /build/vernemq
 
