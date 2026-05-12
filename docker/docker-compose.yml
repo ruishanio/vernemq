@@ -11,13 +11,6 @@ services:
       # HTTP 管理接口和状态检查端口。
       - "8888:8888"
     volumes:
-      # 持久化 VerneMQ 运行数据。
-      - vernemq-data:/vernemq/data
-      # 持久化 VerneMQ 日志。
-      - vernemq-log:/vernemq/log
-
-volumes:
-  # VerneMQ 数据卷。
-  vernemq-data:
-  # VerneMQ 日志卷。
-  vernemq-log:
+      - "./config:/vernemq/etc"
+      - "./data:/vernemq/data"
+      - "./log:/vernemq/log"
