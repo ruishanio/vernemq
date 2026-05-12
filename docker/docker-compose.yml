@@ -1,0 +1,23 @@
+services:
+  # VerneMQ Broker 服务，使用仓库根目录的 Dockerfile 构建本地镜像。
+  vernemq:
+    image: vernemq:source
+    restart: unless-stopped
+    ports:
+      # MQTT TCP 客户端连接端口。
+      - "1883:1883"
+      # MQTT over WebSocket 客户端连接端口。
+      - "8080:8080"
+      # HTTP 管理接口和状态检查端口。
+      - "8888:8888"
+    volumes:
+      # 持久化 VerneMQ 运行数据。
+      - vernemq-data:/vernemq/data
+      # 持久化 VerneMQ 日志。
+      - vernemq-log:/vernemq/log
+
+volumes:
+  # VerneMQ 数据卷。
+  vernemq-data:
+  # VerneMQ 日志卷。
+  vernemq-log:

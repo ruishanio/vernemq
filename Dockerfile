@@ -40,6 +40,7 @@ ENV PATH="/vernemq/bin:${PATH}"
 
 COPY --from=builder --chown=10000:10000 /build/vernemq/_build/default/rel/vernemq/ /vernemq/
 COPY --chown=10000:10000 docker/vernemq.conf /vernemq/etc/vernemq.conf
+COPY --chmod=0755 docker/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 
 RUN ln -s /vernemq/etc /etc/vernemq \
     && ln -s /vernemq/data /var/lib/vernemq \
@@ -54,4 +55,4 @@ HEALTHCHECK CMD vernemq ping | grep -q pong
 
 USER vernemq
 
-CMD ["vernemq", "console", "-noshell", "-noinput"]
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
