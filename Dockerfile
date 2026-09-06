@@ -1,6 +1,7 @@
 # syntax=docker/dockerfile:1
 
-ARG OTP_VERSION=26
+# VerneMQ 2.2.0 要求 OTP 27 及以上；OTP 28.5 镜像基于 Trixie，与运行阶段保持一致。
+ARG OTP_VERSION=28.5
 
 FROM erlang:${OTP_VERSION} AS builder
 
@@ -16,12 +17,15 @@ RUN apt-get update \
 
 COPY . .
 
-RUN make rel
+# 使用镜像中随当前 OTP 构建的 rebar3，避免仓库内预编译版本与 OTP 不兼容。
+RUN /usr/local/bin/rebar3 version \
+    && make rel REBAR=/usr/local/bin/rebar3
 
-FROM debian:bookworm-slim
+FROM debian:trixie-slim
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
+        adduser \
         bash \
         procps \
         openssl \
